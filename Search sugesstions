@@ -1,0 +1,59 @@
+import React, { useEffect, useState } from 'react'
+import "./styles.css";
+import {BiSearch} from 'react-icons/bi'
+import {MdClear} from 'react-icons/md'
+import axios from 'axios'
+
+export default function App() {
+
+  
+   const [movies, setMOvies]= useState([]);
+    const [word,setWordEntered]= useState([]);
+
+    useEffect(()=>{
+     let loaddata = async ()=>{
+      const resp = await axios.get('https://fakestoreapi.com/products/')
+      setMOvies(resp.data);
+     }
+      loaddata()
+      },[])
+       console.log(movies)
+    const search = (text)=>{
+      let match = movies.filter(items =>{
+        const regex  = new RegExp(`${text}`,'gi')
+         return items.title.match(regex)
+      })
+       setWordEntered(match)
+    }
+
+    
+
+  return (
+    <div className="App">
+<input type ="text" onChange={(e)=>search(e.target.value)}/>
+    
+
+
+
+
+<div>
+  {word && word.map((items,index)=>(
+    <div key={index}>
+    {items.title}
+</div>
+  ))}
+    
+     
+  
+
+  </div>
+
+
+
+      </div>
+      
+
+        
+     
+  );
+}
